@@ -425,7 +425,7 @@ class Bot(BaseBot):
 
     
          if message == "-teleports" or message =="!teleports" :
-                    await self.highrise.chat(f"\n • Teleports\n ____________________________\n-g or -floor1: Ground floor \n-floor2 or -2 :Second floor  \n-vip or -v : (vip only), make sure you have 🎫VIP Tickets 🎫 \n• type -buy or !buy for details ")
+                    await self.highrise.chat(f"\n • Teleports\n ____________________________\n-g or -floor1: Ground floor \n-floor2 or -2 :Second floor  \n-dj : (Owners& mods only)\n-vip or -v : (vip only), make sure you have 🎫VIP Tickets 🎫 \n• type -buy or !buy for details ")
          if message.lower().lstrip().startswith(("!rules", "-rules")):
            await self.highrise.chat(f"\n\n        RULES\n ____________________________\n 1. NO UNDERAGE \n 2. No advertising\n 3. No hate speech \n 4. No begging (those trash will be immediately banned 🚫) \n 5. No spamming ")
          if message.lower().lstrip().startswith(("-feedback", "!feedback")):
@@ -495,7 +495,10 @@ class Bot(BaseBot):
                         await self.highrise.teleport(user_id, Position(8,14,7))
                 elif message.lower().startswith(('-tele')) and  message.lower().endswith(("g","1","floor1")) :
                     if user.username.lower() in self.moderators :
-                        await self.highrise.teleport(user_id, Position(12,1,10.5))                    
+                        await self.highrise.teleport(user_id, Position(12,1,10.5))   
+                elif message.lower().startswith(('-tele')) and  message.lower().endswith(("dj")) :
+                    if user.username.lower() in self.moderators :
+                        await self.highrise.teleport(user_id, Position(5.5,2.86,3.5))   
             except Exception as e:
              print(f"An exception occurred[Due To {parts[0][1:]}]: {e}")
 
@@ -558,7 +561,9 @@ class Bot(BaseBot):
                await self.show_profile(user)
          if message.lower().startswith(("-top tippers","!top tippers")):
                await self.top_tippers()
-               
+         if message.lower().startswith(('-dj')) : 
+            if user.username.lower() in self.moderators  :  
+                 await self.highrise.teleport(user.id, Position(5.5,0.86,3.5)) 
          if message.lower().startswith(('-vip')) : 
             if user.username.lower() in self.moderators or (user.username in self.membership and self.get_rank(self.membership[user.username]["amount"]) in ["VIP","Icon"]):
                await self.highrise.teleport(user.id, Position(12.5,14,5.5)) 
