@@ -127,7 +127,7 @@ class Bot(BaseBot):
         while True:
 
             try:
-                if self.dance_floor_pos and self.dancer  :
+                if self.dance_floor_pos or self.dance_floor2_pos and self.dancer  :
                     ran = random.randint(1, 73)
                     emote_text, emote_time = await self.get_emote_df(ran)
                     emote_time -= 1
@@ -913,6 +913,20 @@ class Bot(BaseBot):
         if self.dance_floor_pos:
 
             if isinstance(pos, Position):
+        
+                for dance_floor_info in self.dance_floor2_pos:
+
+                    if (
+                        dance_floor_info[0] <= pos.x <= dance_floor_info[1] and
+                        dance_floor_info[2] <= pos.y <= dance_floor_info[3] and
+                        dance_floor_info[4] <= pos.z <= dance_floor_info[5]
+                    ):
+
+                        if user.id not in self.dancer:
+                            self.dancer.append(user.id)
+
+                        return
+
                 for dance_floor_info in self.dance_floor_pos:
 
                     if (
