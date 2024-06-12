@@ -127,7 +127,27 @@ class Bot(BaseBot):
         while True:
 
             try:
-                if self.dance_floor_pos or self.dance_floor2_pos and self.dancer  :
+                if self.dance_floor_pos and self.dancer  :
+                    ran = random.randint(1, 73)
+                    emote_text, emote_time = await self.get_emote_df(ran)
+                    emote_time -= 1
+
+                    tasks = [asyncio.create_task(self.highrise.send_emote(emote_text, user_id)) for user_id in self.dancer]
+
+                    await asyncio.wait(tasks)
+
+                    await asyncio.sleep(emote_time)
+
+                await asyncio.sleep(1)
+
+            except Exception as e:
+                print(f"{e}")
+    async def dance_floor2(self):
+
+        while True:
+
+            try:
+                if self.dance_floor2_pos and self.dancer  :
                     ran = random.randint(1, 73)
                     emote_text, emote_time = await self.get_emote_df(ran)
                     emote_time -= 1
