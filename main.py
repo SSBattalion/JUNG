@@ -894,6 +894,8 @@ class Bot(BaseBot):
              await self.highrise.send_message(conversation_id, "Its time!, come join our party", "invite", __rid)
              await asyncio.sleep(2)
              await self.highrise.send_message(conversation_id, "Join us next friday for the grand opening of The Best Room, an exclusive space where memories are made and good times never end. We’re rolling out the red carpet just for you and your friends to experience the pinnacle of entertainment and camaraderie 🥀🥂.")
+             await asyncio.sleep(1)
+             await self.highrise.send_message(conversation_id, "https://high.rs/room?id=665e8764fef0966fdc18a9a5 🥀")
           except Exception as e:
              print(f"An exception occured: {e}")
     async def on_tip(self, sender: User, receiver: User, tip: CurrencyItem) -> None:
