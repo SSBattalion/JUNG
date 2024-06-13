@@ -805,9 +805,9 @@ class Bot(BaseBot):
             return "Guest"
         elif amount < 500:
             return "Regular"
-        elif amount < 750:
+        elif amount < 1250:
             return "VIP"
-        elif amount < 1500:
+        elif amount > 1250:
             return "Icon"
         else:
             return "Icon"
@@ -866,12 +866,12 @@ class Bot(BaseBot):
     def get_next_title_amount(self, amount: int) -> int:
         if amount < 100:
             return 100
-        elif amount < 1000:
-            return 1000
-        elif amount < 750:
-            return 750
+        elif amount < 500:
+            return 500
+        elif amount < 1250:
+            return 1250
         else:
-            return 1500
+            return 1259
            
     async def on_tip(self, sender: User, receiver: User, tip: CurrencyItem) -> None:
         try:
