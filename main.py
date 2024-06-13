@@ -882,20 +882,20 @@ class Bot(BaseBot):
             message = response.messages[0].content
             print (message)
         if message.lower().lstrip().startswith(("hello","hi","ello","‘invite me")):
-            parts = message[1:].split()
-            args = parts[1:]
-            url = f"https://webapi.highrise.game/users?&username={args[0][1:]}&sort_order=asc&limit=1"
-            response = requests.get(url)
-            data = response.json()
-            users = data['users']
-            try:
-              __id = f"1_on_1:{_bid}:{user_id}"
-              __idx = f"1_on_1:{user_id}:{_bid}"
-              __rid = os.environ['Room_id']
-              await self.highrise.send_message(conversation_id, "Its time!, come join our party", "invite", __rid)
-              await asyncio.sleep(2)
-              await self.highrise.send_message(conversation_id, "Join us next friday for the grand opening of The Best Room, an exclusive space where memories are made and good times never end. We’re rolling out the red carpet just for you and your friends to experience the pinnacle of entertainment and camaraderie.")
-            except Exception as e:
+          try:
+             parts = message[1:].split()
+             args = parts[1:]
+             url = f"https://webapi.highrise.game/users?&username={args[0][1:]}&sort_order=asc&limit=1"
+             response = requests.get(url)
+             data = response.json()
+             users = data['users']     
+             __id = f"1_on_1:{_bid}:{user_id}"
+             __idx = f"1_on_1:{user_id}:{_bid}"
+             __rid = os.environ['Room_id']
+             await self.highrise.send_message(conversation_id, "Its time!, come join our party", "invite", __rid)
+             await asyncio.sleep(2)
+             await self.highrise.send_message(conversation_id, "Join us next friday for the grand opening of The Best Room, an exclusive space where memories are made and good times never end. We’re rolling out the red carpet just for you and your friends to experience the pinnacle of entertainment and camaraderie.")
+          except Exception as e:
              print(f"An exception occured: {e}")
     async def on_tip(self, sender: User, receiver: User, tip: CurrencyItem) -> None:
         try:
