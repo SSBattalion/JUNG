@@ -563,7 +563,7 @@ class Bot(BaseBot):
                await self.top_tippers()
          if message.lower().startswith(('-dj')) : 
             if user.username.lower() in self.moderators  :  
-                 await self.highrise.teleport(user.id, Position(5.5,0.86,3.5)) 
+                 await self.highrise.teleport(user.id, Position(5.5,2.86,3.5)) 
          if message.lower().startswith(('-vip')) : 
             if user.username.lower() in self.moderators or (user.username in self.membership and self.get_rank(self.membership[user.username]["amount"]) in ["VIP","Icon"]):
                await self.highrise.teleport(user.id, Position(12.5,14,5.5)) 
@@ -805,9 +805,9 @@ class Bot(BaseBot):
             return "Guest"
         elif amount < 500:
             return "Regular"
-        elif amount < 2500:
+        elif amount < 750:
             return "VIP"
-        elif amount < 7500:
+        elif amount < 1500:
             return "Icon"
         else:
             return "Icon"
@@ -868,10 +868,10 @@ class Bot(BaseBot):
             return 100
         elif amount < 1000:
             return 1000
-        elif amount < 10000:
-            return 10000
+        elif amount < 750:
+            return 750
         else:
-            return 100000
+            return 1500
            
     async def on_tip(self, sender: User, receiver: User, tip: CurrencyItem) -> None:
         try:
@@ -912,11 +912,11 @@ class Bot(BaseBot):
         elif rank == "Regular":
             return 500
         elif rank == "VIP":
-            return 2500
+            return 750
         elif rank == "Icon":
-            return 7500
+            return 1500
         else:
-            return 7500
+            return 1500
 
     def get_title(self, username: str, amount: int) -> str:
         rank = self.get_rank(amount)
