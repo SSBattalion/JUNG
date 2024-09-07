@@ -19,8 +19,8 @@ from highrise.__main__ import *
 import asyncio, random
 from emotes import Emotes
 from emotes import Dance_Floor
-owners = ['alionardo_','duddus','ivyrze']
-moderators = ['alionardo_','duddus','ivyrze']
+owners = ['alionardo_','enjoytech']
+moderators = ['alionardo_','enjoytech']
 
 class BotDefinition:
     
@@ -57,31 +57,8 @@ class Bot(BaseBot):
         self.announce_task = None
         #conversation id var
         self.convo_id_registry = []
-        #dance floor position
-        min_x = 2.5
-        max_x = 8.5
-        min_y = 0
-        max_y = 1
-        min_z = 21.5
-        max_z = 27.5
-
-        self.dance_floor_pos = [(min_x, max_x, min_y, max_y, min_z, max_z)]
-        x1 = 11.5
-        x2 = 15.5
-        y1  = 14.5
-        y2  = 15
-        z1 = 24.5
-        z2 = 28.5
-        self.dance_floor2_pos = [(x1, x2, y1, y2, z1, z2)]
-
-        #dancer variable
-        self.dancer = []
-
-        #dance floor emotes var
-        self.emotesdf = Dance_Floor
-        #conversation id var
-        self.convo_id_registry = []
-
+       
+     
       
     def load_temporary_vips(self):
         try:
@@ -122,53 +99,7 @@ class Bot(BaseBot):
       with open("moderators.json", "w") as file:
             json.dump(self.moderators, file)
 
-    async def dance_floor(self):
 
-        while True:
-
-            try:
-                if self.dance_floor_pos and self.dancer  :
-                    ran = random.randint(1, 73)
-                    emote_text, emote_time = await self.get_emote_df(ran)
-                    emote_time -= 1
-
-                    tasks = [asyncio.create_task(self.highrise.send_emote(emote_text, user_id)) for user_id in self.dancer]
-
-                    await asyncio.wait(tasks)
-
-                    await asyncio.sleep(emote_time)
-
-                await asyncio.sleep(1)
-
-            except Exception as e:
-                print(f"{e}")
-    async def dance_floor2(self):
-
-        while True:
-
-            try:
-                if self.dance_floor2_pos and self.dancer  :
-                    ran = random.randint(1, 73)
-                    emote_text, emote_time = await self.get_emote_df(ran)
-                    emote_time -= 1
-
-                    tasks = [asyncio.create_task(self.highrise.send_emote(emote_text, user_id)) for user_id in self.dancer]
-
-                    await asyncio.wait(tasks)
-
-                    await asyncio.sleep(emote_time)
-
-                await asyncio.sleep(1)
-
-            except Exception as e:
-                print(f"{e}")
-    async def get_emote_df(self, target) -> None:
-
-        try:
-            emote_info = self.emotesdf.get(target)
-            return emote_info      
-        except ValueError:
-            pass
     async def announce(self, user_input: str, message: str):
       while not self.should_stop:  
           await asyncio.sleep(6)
@@ -194,18 +125,16 @@ class Bot(BaseBot):
 
     async def on_start(self, session_metadata: SessionMetadata) -> None:
       try:
-         asyncio.create_task(self.dance_floor())
          Counter.bot_id = session_metadata.user_id
          print("Ali is booting ...")
        
 
-         self.highrise.tg.create_task(self.highrise.walk_to(Position(13.5, 1,11.5, facing='FrontRight')))
+         self.highrise.tg.create_task(self.highrise.walk_to(Position(3.5, 0,2.5, facing='FrontLeft')))
          self.load_temporary_vips()
          self.load_moderators()
          await asyncio.sleep(10)
          await self.highrise.chat(f"Deployed")
-         if Counter.bot_id not in self.dancer:
-           self.dancer.append(Counter.bot_id)
+        
       except Exception as e:
           print(f"An exception occured: {e}")  
     async def on_emote(self, user: User ,emote_id : str , receiver: User | None )-> None:
@@ -409,8 +338,6 @@ class Bot(BaseBot):
          if message.lower().lstrip().startswith(("-emotes", "!emotes")):
                 await self.highrise.send_whisper(user.id, "\n• Emote can be used by NUMBERS")
                 await self.highrise.send_whisper(user.id, "\n• For loops say -loop or !loop then the emote number.")         
-         if message.lower().lstrip().startswith(("!loop","-loop")):
-          await self.highrise.send_whisper(user.id,"\n• loops\n ____________________________\nMention loop before the emote numer\n ____________________________")
          if message.lower().lstrip().startswith(("!admin","-admin")):
            if user.username.lower() in moderators :
              await self.highrise.send_whisper(user.id,"\n____________________________\n• Give mod & vip :\n-give @ mod \n-give @ mod 24h \n• Remove mod\vop\n-remove @ mod\vip\n• Advertising\n-announce + text\n-clear\n ____________________________")
@@ -489,16 +416,17 @@ class Bot(BaseBot):
                           await self.teleport_user_next_to(target_username, user)
                 elif message.lower().startswith(('-tele')) and  message.lower().endswith(("vip")) :
                     if user.username.lower() in self.moderators :
-                        await self.highrise.teleport(user_id, Position(12.5, 14,5.5))
+                        await self.highrise.teleport(user_id, Position(15, 12.75,16.5))
                 elif message.lower().startswith(('-tele')) and  message.lower().endswith(("icon")) :
                     if user.username.lower() in self.moderators :
-                        await self.highrise.teleport(user_id, Position(8,14,7))
-                elif message.lower().startswith(('-tele')) and  message.lower().endswith(("g","1","floor1")) :
+                        await self.highrise.teleport(user_id, Position(15.5,19,16.5))
+                elif message.lower().startswith(('-tele')) and  message.lower().endswith(("g","1","floor1","f1")) :
                     if user.username.lower() in self.moderators :
-                        await self.highrise.teleport(user_id, Position(12,1,10.5))   
-                elif message.lower().startswith(('-tele')) and  message.lower().endswith(("dj")) :
+                        await self.highrise.teleport(user_id, Position(15.5,0.25,11.5))   
+                elif message.lower().startswith(('-tele')) and  message.lower().endswith(("2","floor2", "f2")) :
                     if user.username.lower() in self.moderators :
-                        await self.highrise.teleport(user_id, Position(5.5,2.86,3.5))   
+                        await self.highrise.teleport(user_id, Position(14.5,6.5,17))   
+               
             except Exception as e:
              print(f"An exception occurred[Due To {parts[0][1:]}]: {e}")
 
@@ -561,24 +489,24 @@ class Bot(BaseBot):
                await self.show_profile(user)
          if message.lower().startswith(("-top tippers","!top tippers")):
                await self.top_tippers()
-         if message.lower().startswith(('-dj')) : 
+         if message.lower().startswith(('-2','f2','floor2')) : 
             if user.username.lower() in self.moderators  :  
-                 await self.highrise.teleport(user.id, Position(5.5,2.86,3.5)) 
+                 await self.highrise.teleport(user.id, Position(14.5,6.5,17)) 
          if message.lower().startswith(('-vip')) : 
             if user.username.lower() in self.moderators or (user.username in self.membership and self.get_rank(self.membership[user.username]["amount"]) in ["VIP","Icon"]):
-               await self.highrise.teleport(user.id, Position(12.5,14,5.5)) 
+               await self.highrise.teleport(user.id, Position(15, 12.75,16.5)) 
             else:
                await self.highrise.send_whisper((user.id)," this is a privet place for VIP ranks, and ranks above.")
          if message.lower().startswith(('-icon')) :
             if user.username.lower() in self.moderators or (user.username in self.membership and self.get_rank(self.membership[user.username]["amount"]) in ["Icon"]):
-               await self.highrise.teleport(user.id, Position(8, 14,7)) 
+               await self.highrise.teleport(user.id, Position(15.5,19,16.5)) 
             else:
                await self.highrise.send_whisper((user.id)," this is a privet place for Icon ranks VIPs and ranks above.")
         
-         if message.startswith(('-floor1','-g','-1')):
+         if message.startswith(('-floor1','-g','-1','f1')):
              parts = message.split()
              if len(parts) == 1:
-                await self.highrise.teleport(f"{user.id}", Position(12,1,10.5))
+                await self.highrise.teleport(f"{user.id}", Position(15.5,0.25,11.5))
            
          if message.lower().startswith("loop"):
            parts = message.split()
@@ -872,32 +800,7 @@ class Bot(BaseBot):
             return 1250
         else:
             return 1259
-    async def on_message(self, user_id: str, conversation_id: str, is_new_conversation: bool) -> None:
-        _bid = Counter.bot_id
-        _id = f"1_on_1:{_bid}:{user_id}"
-        _idx = f"1_on_1:{user_id}:{_bid}"
-        _rid = os.environ['Room_id']
-        response = await self.highrise.get_messages(conversation_id)
-        if isinstance(response, GetMessagesRequest.GetMessagesResponse):
-            message = response.messages[0].content
-            print (message)
-        if message.lower().lstrip().startswith(("hello","hi","ello","invite me")):
-          try:
-             parts = message[1:].split()
-             args = parts[1:]
-             url = f"https://webapi.highrise.game/users?&username={args[0][1:]}&sort_order=asc&limit=1"
-             response = requests.get(url)    
-             __id = f"1_on_1:{_bid}:{user_id}"
-             __idx = f"1_on_1:{user_id}:{_bid}"
-             __rid = os.environ['Room_id']
-             await asyncio.sleep(1)
-             await self.highrise.send_message(conversation_id, "Its time!, come join our party", "invite", __rid)
-             await asyncio.sleep(2)
-             await self.highrise.send_message(conversation_id, "Join us next friday for the grand opening of The Best Room, an exclusive space where memories are made and good times never end. We’re rolling out the red carpet just for you and your friends to experience the pinnacle of entertainment and camaraderie 🥀🥂.")
-             await asyncio.sleep(1)
-             await self.highrise.send_message(conversation_id, "https://high.rs/room?id=665e8764fef0966fdc18a9a5 🥀")
-          except Exception as e:
-             print(f"An exception occured: {e}")
+ 
     async def on_tip(self, sender: User, receiver: User, tip: CurrencyItem) -> None:
         try:
             print(f"{sender.username} tipped {receiver.username} an amount of {tip.amount}")
@@ -958,48 +861,7 @@ class Bot(BaseBot):
     async def on_user_move(self, user: User, pos: Position | AnchorPosition) -> None:
       if user.username == " Alionardo_":
          print(f"{user.username}: {pos}")
-      if user:
-       
-        if self.dance_floor_pos:
-
-            if isinstance(pos, Position):
-        
-                for dance_floor_info in self.dance_floor2_pos:
-
-                    if (
-                        dance_floor_info[0] <= pos.x <= dance_floor_info[1] and
-                        dance_floor_info[2] <= pos.y <= dance_floor_info[3] and
-                        dance_floor_info[4] <= pos.z <= dance_floor_info[5]
-                    ):
-
-                        if user.id not in self.dancer:
-                            self.dancer.append(user.id)
-
-                        return
-
-                for dance_floor_info in self.dance_floor_pos:
-
-                    if (
-                        dance_floor_info[0] <= pos.x <= dance_floor_info[1] and
-                        dance_floor_info[2] <= pos.y <= dance_floor_info[3] and
-                        dance_floor_info[4] <= pos.z <= dance_floor_info[5]
-                    ):
-
-                        if user.id not in self.dancer:
-                            self.dancer.append(user.id)
-
-                        return
-
-            # If not in any dance floor area
-            if user.id in self.dancer:
-                self.dancer.remove(user.id)
-
-
-
-        print(f"{user.username}: {pos}")
-
-   
-          
+     
   
     
 
